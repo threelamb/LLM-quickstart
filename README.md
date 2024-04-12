@@ -172,16 +172,47 @@ df -h
 ```
 
 ```bash
-# 检查端口使用
-lsof -i :8000
+# 检查cpu/内存等状态
+top
+```
+
+```bash
+# 尝试加上-vvv参数以获得详细的调试信息
+ssh -vvv root@xxx.xxx.xxx.xxx
+```
+
+```bash
+# 使用telnet命令
+telnet 目标IP地址 22
+```
+
+```bash
+# 检查jupyter进程信息
+ps -aux | grep jupyter | grep -v grep
+```
+
+```bash
+# 检查SSH服务状态
+sudo systes sshdmctl statu
+```
+
+```bash
+# 判断22端口有没有开
+netstat -tuln | grep 22
+```
+
+```bash
+# 使用以下命令来设置用户名和邮箱：
+设置用户名: git config --global user.name "你的用户名"
+设置邮箱: git config --global user.email "你的邮箱地址"
 ```
 ## 问题：
 ### 问题1：
 #### 问题描述：
 我发现一个奇怪现象，所有的checkpoint，他内部记录的log_history都是从 loss=1.6377开始的，怎么理解这种现象
-![alt text](aa9938914a92bc03b84c6a22e88d414.png)
+![alt text](pic/aa9938914a92bc03b84c6a22e88d414.png)
 ，我跑的是全量的YelpReviewFull
-![alt text](321c0eb3dab2820678dbccf79d0f722.png)
+![alt text](pic/321c0eb3dab2820678dbccf79d0f722.png)
 为什么6Wstep epoch还是0.0啊
 #### 解答：
 原因是，log_history是全量日志，每个checkpoint都会记录当前的全量日志
@@ -189,7 +220,7 @@ lsof -i :8000
 ### 问题1：
 #### 问题描述：
 我试了两种方式，都不能从检查点恢复，run起来的时候都是从step1开始的
-![alt text](52fac129f91768918851f2e294014c8.png)
+![alt text](pic/52fac129f91768918851f2e294014c8.png)
 
 #### 解答：
 ```python
@@ -199,19 +230,19 @@ trainer.train(resume_from_checkpoint=True)
 trainer.train(resume_from_checkpoint="models/bert-base-cased-finetune-yelp/checkpoint-63000")
 ```
 resume_from_checkpoint是trainer的参数，不是TrainingArguments的参数
-![alt text](ed5a10b2a134f5c9b6768495cb38b10.png)
+![alt text](pic/ed5a10b2a134f5c9b6768495cb38b10.png)
 
 ### 问题1：ssh登录失败
 #### 问题描述
 很奇怪啊，我的华为云ssh突然失败了，修改了新密码也登录不了
-![alt text](7bef46dba74c9db61514812e20e78c6.png)
+![alt text](pic/7bef46dba74c9db61514812e20e78c6.png)
 用vnc方式可以登录，ssh不行（本来是可以的）
 #### 解决办法：
 ```bash
 # 检查ssh配置
 sudo vi /etc/ssh/sshd_config
 ```
-![alt text](566a4ac95d0a443a648b20ef19228aa.png)
+![alt text](pic/566a4ac95d0a443a648b20ef19228aa.png)
 不知道是系统自动升级，还是什么原因ssh配置变成了 禁止密码，PermitRootLogin prohibit-password改成PermitRootLogin True就可以正常ssh了
 ```bash
 # 检查端口使用
