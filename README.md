@@ -136,7 +136,7 @@ c.ServerApp.ip = '*'
 
 使用 nohup 后台启动 Jupyter Lab
 ```shell
-$ nohup jupyter lab --port=8000 --NotebookApp.token='替换为你的密码' --notebook-dir=./ &
+nohup jupyter lab --port=8000 --NotebookApp.token='替换为你的密码' --notebook-dir=./ &
 ```
 
 Jupyter Lab 输出的日志将会保存在 `nohup.out` 文件（已在 .gitignore中过滤）。
@@ -159,3 +159,77 @@ set OPENAI_API_KEY=你的-api-key
 ```
 
 请确保将`'你的-api-key'`替换为你的实际OpenAI API密钥。
+
+## 常用命令
+```bash
+# 检查端口使用
+lsof -i :8000
+```
+
+```bash
+# 检查硬盘使用
+df -h
+```
+
+```bash
+# 检查端口使用
+lsof -i :8000
+```
+## 问题：
+### 问题1：
+#### 问题描述：
+我发现一个奇怪现象，所有的checkpoint，他内部记录的log_history都是从 loss=1.6377开始的，怎么理解这种现象
+![alt text](aa9938914a92bc03b84c6a22e88d414.png)
+，我跑的是全量的YelpReviewFull
+![alt text](321c0eb3dab2820678dbccf79d0f722.png)
+为什么6Wstep epoch还是0.0啊
+#### 解答：
+原因是，log_history是全量日志，每个checkpoint都会记录当前的全量日志
+
+### 问题1：
+#### 问题描述：
+我试了两种方式，都不能从检查点恢复，run起来的时候都是从step1开始的
+![alt text](52fac129f91768918851f2e294014c8.png)
+
+#### 解答：
+```python
+# 从最近的checkpoint恢复
+trainer.train(resume_from_checkpoint=True)
+# 从指定的checkpoint恢复
+trainer.train(resume_from_checkpoint="models/bert-base-cased-finetune-yelp/checkpoint-63000")
+```
+resume_from_checkpoint是trainer的参数，不是TrainingArguments的参数
+![alt text](ed5a10b2a134f5c9b6768495cb38b10.png)
+
+### 问题1：ssh登录失败
+#### 问题描述
+很奇怪啊，我的华为云ssh突然失败了，修改了新密码也登录不了
+![alt text](7bef46dba74c9db61514812e20e78c6.png)
+用vnc方式可以登录，ssh不行（本来是可以的）
+#### 解决办法：
+```bash
+# 检查ssh配置
+sudo vi /etc/ssh/sshd_config
+```
+![alt text](566a4ac95d0a443a648b20ef19228aa.png)
+不知道是系统自动升级，还是什么原因ssh配置变成了 禁止密码，PermitRootLogin prohibit-password改成PermitRootLogin True就可以正常ssh了
+```bash
+# 检查端口使用
+sudo systemctl restart sshd
+```
+怀疑是华为云管理器，会在某个行为下，会自动禁用密码，
+
+```bash
+# 检查端口使用
+lsof -i :8000
+```
+
+```bash
+# 检查端口使用
+lsof -i :8000
+```
+
+```bash
+# 检查端口使用
+lsof -i :8000
+```
