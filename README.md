@@ -47,7 +47,9 @@ sudo sh cuda_12.4.0_550.54.14_linux.run
 安装完成后，使用 `nvidia-smi` 指令查看版本：
 
 ```shell
-nvidia-smi          
+nvidia-smi    
+为了实时查看GPU使用情况，可以使用 watch 指令实现轮询：watch -n 1 nvidia-smi:
+
 Mon Dec 18 12:10:47 2023       
 +---------------------------------------------------------------------------------------+
 | NVIDIA-SMI 535.129.03             Driver Version: 535.129.03   CUDA Version: 12.2     |
@@ -161,6 +163,11 @@ set OPENAI_API_KEY=你的-api-key
 请确保将`'你的-api-key'`替换为你的实际OpenAI API密钥。
 
 ## 常用命令
+```bash
+# 为了实时查看GPU使用情况，可以使用 watch 指令实现轮询：
+watch -n 1 nvidia-smi
+```
+
 ```bash
 # 检查端口使用
 lsof -i :8000
