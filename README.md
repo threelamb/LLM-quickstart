@@ -138,7 +138,7 @@ c.ServerApp.ip = '*'
 
 使用 nohup 后台启动 Jupyter Lab
 ```shell
-nohup jupyter lab --port=8000 --NotebookApp.token='替换为你的密码' --notebook-dir=./ &
+nohup jupyter lab --allow-root --ip=0.0.0.0 --port=8000 --NotebookApp.token='替换为你的密码' --notebook-dir=./ &
 ```
 
 Jupyter Lab 输出的日志将会保存在 `nohup.out` 文件（已在 .gitignore中过滤）。
@@ -176,6 +176,8 @@ lsof -i :8000
 ```bash
 # 检查硬盘使用
 df -h
+# du（Disk Usage）命令用于查看目录和文件的磁盘使用情况。
+du -sh /path/to/directory
 ```
 
 ```bash
